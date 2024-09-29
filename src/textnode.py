@@ -12,6 +12,9 @@ class TextType(Enum):
 
 class TextNode():
     def __init__(self, text, text_type, url = None) -> None:
+        if not isinstance(text_type, TextType):
+            raise ValueError('Invalid TextType: Please use TextType Enum')
+
         self.text = text
         self.text_type = text_type
         self.url = url
