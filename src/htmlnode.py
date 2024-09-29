@@ -18,7 +18,7 @@ class HTMLNode():
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag = None, value = None, props = None):
+    def __init__(self, value, tag = None, props = None):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
@@ -28,3 +28,16 @@ class LeafNode(HTMLNode):
             return self.value
 
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+class ParentNode(HTMLNode):
+    def __init__(self, children, tag = None, props = None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag is None:
+            raise ValueError('Invalid HTML: missing tag')
+        if self.children is None:
+            raise ValueError('Invalid HTML: missing children')
+
+        return f"<{self.tag}{self.props_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
+
